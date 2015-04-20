@@ -1,0 +1,1 @@
+test <- read.csv('adoFertility/fertility_rates.csv', header=TRUE)
