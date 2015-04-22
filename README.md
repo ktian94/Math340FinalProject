@@ -15,12 +15,20 @@ Can we classify a country with “good” or “bad” fertility rates based off
 Can we classify a country on the uptrend or downtrend based off nonobvious variables?
 
 Datasets:
+
 Adolescent fertility rate: http://data.worldbank.org/indicator/SP.ADO.TFRT/countries/1W?display=default
+
 Literacy rate of youth females: http://data.worldbank.org/indicator/SE.ADT.1524.LT.FE.ZS/countries/1W?display=default
+
 Ratio of girls to  boys in primary and secondary education: http://data.worldbank.org/indicator/SE.ENR.PRSC.FM.ZS/countries/1W?display=default
+
 Prevalence of HIV among adolescent females: http://data.worldbank.org/indicator/SH.HIV.1524.FE.ZS/countries/1W?display=default
+
 Female percentage of progression to secondary school: http://data.worldbank.org/indicator/SE.SEC.PROG.FE.ZS/countries/1W?display=default
+
 Unemployment percentage of adolescent females: http://data.worldbank.org/indicator/SL.UEM.1524.FE.ZS/countries/1W?display=default
+
 Female persistence to last grade of primary school: http://data.worldbank.org/indicator/SE.PRM.PRSL.FE.ZS/countries/1W?display=default
+
 GDP by country: http://data.worldbank.org/indicator/NY.GDP.MKTP.CD/countries/1W?display=default
 
