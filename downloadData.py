@@ -26,8 +26,5 @@ for source in dataSources:
 		if not pattern.match(fname) and fname[-3:] == 'csv':
 			with open('extract.R','a') as rScript:
 				rScript.write(source['tableName'] + ' <- read.csv("' + source['targDir'] + '/' + fname + '", header=TRUE)\n')
-
-
-
-	
-
+			with open('csvMap.txt','a') as csvMap:
+				csvMap.write(source['targDir'] + '/' + fname + '\n') 
