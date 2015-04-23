@@ -31,10 +31,14 @@ ua_09_13.clean <- ua_09_13[complete.cases(ua_09_13),]
 fpp_09_13.clean <- fpp_09_13[complete.cases(fpp_09_13),]
 gdp_09_13.clean <- gdp_09_13[complete.cases(gdp_09_13),]
 
-# demo line on how to make a continuous variable into a categorical one
+# demo how to make a continuous variable into a categorical one
 low_fr <- ifelse(fr_09_13.clean$X2013<=50,1,0)
 fr_09_13.class <- cbind(fr_09_13.clean,low_fr)
 
-# demo line on how to merge tables on a certain variable
+# demo how to merge tables on a certain variable
 fr_ua_13 <- merge(fr_09_13.class[,c('Country.Name','low_fr')],ua_09_13.clean[,c('Country.Name','X2013')],by='Country.Name')
 
+# demo how to add region to data
+country_metadata <- read.csv("femalePrimPers/Metadata_Country_se.prm.prsl.fe.zs_Indicator_en_csv_v2.csv", header=TRUE)
+names(country_metadata)[1] <- "Country.Name"
+fr_ua_13.region <- merge(fr_ua_13,country_metadata[,c(1,3)],by='Country.Name')
