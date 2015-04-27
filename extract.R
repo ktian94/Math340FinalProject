@@ -40,15 +40,19 @@ hist(fr_09_13.clean$X2013)
 summary(fr_09_13.clean$X2013)
 
 
-# demo how to make a continuous variable into a categorical one
+#demo how to make a continuous variable into a categorical one
 low_fr_13 <- ifelse(fr_09_13.clean$X2013<=60,1,0)
 fr_09_13.class <- cbind(fr_09_13.clean,low_fr_13)
 
 #creating a new table with the HIV and UA variables merged and the fertility 
 fr_ua_13.region.hiv.ua <- merge(fr_ua_13,hiv_09_13.clean[,c(1,9)],by='Country.Name')
 
+fr_ua_13.region.hiv.ua.fert <-merge(fr_ua_13.region.hiv.ua, fr_09_13.clean[,c(1,9)], by='Country.Name' )
+
+
 #putting the fertility to the table as well
-fr_09_13.region.hiv.ua.class <- cbind(fr_09_13.clean,low_fr_13)
+low_fr_13_NAV<- ifelse(fr_ua_13.region.hiv.ua.fert$X2013<=60,1,0)
+fr_09_13.region.hiv.ua.class <- cbind(fr_ua_13.region.hiv.ua.fert,low_fr_13_NAV)
 
 #dividing into training and testing 
 tr<-sample(seq(1,150),50,replace=FALSE)
@@ -56,7 +60,7 @@ fr_ua_13.region.hiv.ua.tr<-fr_09_13.region.hiv.ua.class[tr,]
 fr_ua_13.region.hiv.ua.ts<-fr_09_13.region.hiv.ua.class[-tr,]
 
 #doing the classification analysis
-fr_09_13.lda<-lda(low_fr_13~fr_ua_13.region.hiv.ua$X2013.x + fr_ua_13.region.hiv.ua$X2013.y ,data=fr_ua_13.region.hiv.ua.tr)
+fr_09_13.lda<-lda(low_fr_13_NAV~fr_ua_13.region.hiv.ua$X2013.x + fr_ua_13.region.hiv.ua$X2013.y ,data=fr_ua_13.region.hiv.ua.tr)
 
 
 #doing the same thing in a different way using a different merged table from below fr_ua_13.region
