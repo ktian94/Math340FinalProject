@@ -44,8 +44,22 @@ summary(fr_09_13.clean$X2013)
 low_fr_13 <- ifelse(fr_09_13.clean$X2013<=60,1,0)
 fr_09_13.class <- cbind(fr_09_13.clean,low_fr_13)
 
+#creating a new table with the HIV and UA variables merged and the fertility 
+fr_ua_13.region.hiv.ua <- merge(fr_ua_13,hiv_09_13.clean[,c(1,9)],by='Country.Name')
 
-#doing classification or LDA where response is fertility rate for 2013
+#putting the fertility to the table as well
+fr_09_13.region.hiv.ua.class <- cbind(fr_09_13.clean,low_fr_13)
+
+#dividing into training and testing 
+tr<-sample(seq(1,150),50,replace=FALSE)
+fr_ua_13.region.hiv.ua.tr<-fr_09_13.region.hiv.ua.class[tr,]
+fr_ua_13.region.hiv.ua.ts<-fr_09_13.region.hiv.ua.class[-tr,]
+
+#doing the classification analysis
+fr_09_13.lda<-lda(low_fr_13~fr_ua_13.region.hiv.ua$X2013.x + fr_ua_13.region.hiv.ua$X2013.y ,data=fr_ua_13.region.hiv.ua.tr)
+
+
+#doing the same thing in a different way using a different merged table from below fr_ua_13.region
 
 #dividing the data up into training and testing data set 
 tr<-sample(seq(1,150),50,replace=FALSE)
@@ -53,7 +67,10 @@ fr_09_13.tr<-fr_09_13.class[tr,]
 fr_09_13.ts<-fr_09_13.class[-tr,]
 
 #performing the linear discrimant analysis 
-fr_09_13.lda<-lda(low_fr_13~ua_09_13.clean$X2013+hiv_09_13.clean$X2013,data=fr_09_13.tr)
+fr_09_13.lda<-lda(low_fr_13~fr_ua_13.region$X2013 + ,data=fr_09_13.tr)
+
+
+
 
 
 # demo how to merge tables on a certain variable
