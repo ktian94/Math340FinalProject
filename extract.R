@@ -46,11 +46,10 @@ fr_09_13.class <- cbind(fr_09_13.clean,low_fr_13)
 
 #creating a new table with the HIV and UA variables merged and the fertility 
 fr_ua_13.region.hiv.ua <- merge(fr_ua_13,hiv_09_13.clean[,c(1,9)],by='Country.Name')
-
 fr_ua_13.region.hiv.ua.fert <-merge(fr_ua_13.region.hiv.ua, fr_09_13.clean[,c(1,9)], by='Country.Name' )
 
 
-#putting the fertility to the table as well
+#creating a categorical variable from the fertility numbers
 low_fr_13_NAV<- ifelse(fr_ua_13.region.hiv.ua.fert$X2013<=60,1,0)
 fr_09_13.region.hiv.ua.class <- cbind(fr_ua_13.region.hiv.ua.fert,low_fr_13_NAV)
 
