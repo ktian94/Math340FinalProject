@@ -41,8 +41,8 @@ summary(fr_09_13.clean$X2013)
 
 
 #demo how to make a continuous variable into a categorical one
-low_fr_13 <- ifelse(fr_09_13.clean$X2013<=60,1,0)
-fr_09_13.class <- cbind(fr_09_13.clean,low_fr_13)
+#low_fr_13 <- ifelse(fr_09_13.clean$X2013<=60,1,0)
+#fr_09_13.class <- cbind(fr_09_13.clean,low_fr_13)
 
 #creating a new table with the HIV and UA variables merged and the fertility 
 fr_ua_13.region.hiv.ua <- merge(fr_ua_13,hiv_09_13.clean[,c(1,9)],by='Country.Name')
@@ -59,20 +59,17 @@ fr_ua_13.region.hiv.ua.tr<-fr_09_13.region.hiv.ua.class[tr,]
 fr_ua_13.region.hiv.ua.ts<-fr_09_13.region.hiv.ua.class[-tr,]
 
 #doing the classification analysis
-fr_09_13.lda<-lda(low_fr_13_NAV~fr_ua_13.region.hiv.ua$X2013.x + fr_ua_13.region.hiv.ua$X2013.y ,data=fr_ua_13.region.hiv.ua.tr)
+fr_09_13.lda<-lda(low_fr_13_NAV~fr_ua_13.region.hiv.ua.tr$X2013.x + fr_ua_13.region.hiv.ua.tr$X2013.y ,data=fr_ua_13.region.hiv.ua.tr)
 
+#results of the classification analysis with variables UA and HIV
+fr_09_13.lda
 
-#doing the same thing in a different way using a different merged table from below fr_ua_13.region
+#doing plots
+plot(fr_09_13.lda)
+plot(fr_09_13.lda, dimen=1,type="density")
 
-#dividing the data up into training and testing data set 
-tr<-sample(seq(1,150),50,replace=FALSE)
-fr_09_13.tr<-fr_09_13.class[tr,]
-fr_09_13.ts<-fr_09_13.class[-tr,]
-
-#performing the linear discrimant analysis 
-fr_09_13.lda<-lda(low_fr_13~fr_ua_13.region$X2013 + ,data=fr_09_13.tr)
-
-
+#doing the predictions (for some reason this part does not work) 
+fr_09_13.pred<-predict(fr_09_13.lda, fr_ua_13.region.hiv.ua.ts) 
 
 
 
