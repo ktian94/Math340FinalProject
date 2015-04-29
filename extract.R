@@ -27,58 +27,62 @@ gdp_13 <- country_GDP[,c(1:4,58)]
 
 # remove NA's in dataset
 # http://stackoverflow.com/questions/4862178/remove-rows-with-nas-in-data-frame
-fr_09_13.clean <- fr_09_13[complete.cases(fr_09_13),]
-lr_09_13.clean <- lr_09_13[complete.cases(lr_09_13),]
-gb_09_13.clean <- gb_09_13[complete.cases(gb_09_13),]
-hiv_09_13.clean <- hiv_09_13[complete.cases(hiv_09_13),]
-fsp_09_13.clean <- fsp_09_13[complete.cases(fsp_09_13),]
-ua_09_13.clean <- ua_09_13[complete.cases(ua_09_13),]
-fpp_09_13.clean <- fpp_09_13[complete.cases(fpp_09_13),]
-gdp_09_13.clean <- gdp_09_13[complete.cases(gdp_09_13),]
+fr_13.clean <- fr_13[complete.cases(fr_13),]
+lr_13.clean <- lr_13[complete.cases(lr_13),]
+gb_13.clean <- gb_13[complete.cases(gb_13),]
+hiv_13.clean <- hiv_13[complete.cases(hiv_13),]
+fsp_13.clean <- fsp_13[complete.cases(fsp_13),]
+uaf_13.clean <- uaf_13[complete.cases(uaf_13),]
+uam_13.clean <- uam_13[complete.cases(uam_13),]
+fpp_13.clean <- fpp_13[complete.cases(fpp_13),]
+gdp_13.clean <- gdp_13[complete.cases(gdp_13),]
 
-# ua - 206, hiv - 128, gdp - 218, fr - 227
+# uaf - 206, hiv - 128, gdp - 218, fr - 227
 
-#histrogram of the distribution of the fr_09_13 in order to determine a high 
+#histrogram of the distribution of the fr_13 in order to determine a high 
 #and low fertility rate 
-hist(fr_09_13.clean$X2013)
-summary(fr_09_13.clean$X2013)
+hist(fr_13.clean$X2013)
+summary(fr_13.clean$X2013)
 
 
 #demo how to make a continuous variable into a categorical one
-low_fr_13 <- ifelse(fr_09_13.clean$X2013<=60,1,0)
-fr_09_13.class <- cbind(fr_09_13.clean,low_fr_13)
+low_fr_13 <- ifelse(fr_13.clean$X2013<=60,1,0)
+fr_13.class <- cbind(fr_13.clean,low_fr_13)
 
 # merge
-fr_ua_13.region.hiv.ua <- merge(fr_ua_13,hiv_09_13.clean[,c(1,9)],by='Country.Name')
-fr_ua_13.region.hiv.ua.fert <-merge(fr_ua_13.region.hiv.ua, fr_09_13.clean[,c(1,9)], by='Country.Name' )
-
+ua_13 <- merge(uaf_13.clean,uam_13.clean[,c(1,5)],by='Country.Name')
+names(ua_13)[5] <- "uaf_2013"
+names(ua_13)[6] <- "uam_2013"
+ua_13$dua_2013 <- ua_13$uaf_2013 - ua_13$uam_2013
+ua_gdp_13 <- merge(ua_13,gdp_13.clean[,c(1,5)],by='Country.Name')
+names(ua_gdp_13)[8] <- "gdp_2013"
+final_13 <- merge(ua_gdp_13,fr_13.class[,c(1,5:6)],by='Country.Name')
+names(final_13)[9] <- "fr_2013"
 
 #creating a categorical variable from the fertility numbers
 low_fr_13_NAV<- ifelse(fr_ua_13.region.hiv.ua.fert$X2013<=60,1,0)
-fr_09_13.region.hiv.ua.class <- cbind(fr_ua_13.region.hiv.ua.fert,low_fr_13_NAV)
+fr_13.region.hiv.ua.class <- cbind(fr_ua_13.region.hiv.ua.fert,low_fr_13_NAV)
 
 #dividing into training and testing 
 tr<-sample(seq(1,150),50,replace=FALSE)
-fr_ua_13.region.hiv.ua.tr<-fr_09_13.region.hiv.ua.class[tr,]
-fr_ua_13.region.hiv.ua.ts<-fr_09_13.region.hiv.ua.class[-tr,]
+fr_ua_13.region.hiv.ua.tr<-fr_13.region.hiv.ua.class[tr,]
+fr_ua_13.region.hiv.ua.ts<-fr_13.region.hiv.ua.class[-tr,]
 
 #doing the classification analysis
-fr_09_13.lda<-lda(low_fr_13_NAV~fr_ua_13.region.hiv.ua.tr$X2013.x + fr_ua_13.region.hiv.ua.tr$X2013.y ,data=fr_ua_13.region.hiv.ua.tr)
+fr_13.lda<-lda(low_fr_13_NAV~fr_ua_13.region.hiv.ua.tr$X2013.x + fr_ua_13.region.hiv.ua.tr$X2013.y ,data=fr_ua_13.region.hiv.ua.tr)
 
 #results of the classification analysis with variables UA and HIV
-fr_09_13.lda
+fr_13.lda
 
 #doing plots
-plot(fr_09_13.lda)
-plot(fr_09_13.lda, dimen=1,type="density")
+plot(fr_13.lda)
+plot(fr_13.lda, dimen=1,type="density")
 
 #doing the predictions (for some reason this part does not work) 
-fr_09_13.pred<-predict(fr_09_13.lda, fr_ua_13.region.hiv.ua.ts) 
+fr_13.pred<-predict(fr_13.lda, fr_ua_13.region.hiv.ua.ts) 
 
 
 
-# demo how to merge tables on a certain variable
-fr_ua_13 <- merge(fr_09_13.class[,c('Country.Name','low_fr')],ua_09_13.clean[,c('Country.Name','X2013')],by='Country.Name')
 
 # demo how to add region to data
 country_metadata <- read.csv("femalePrimPers/Metadata_Country_se.prm.prsl.fe.zs_Indicator_en_csv_v2.csv", header=TRUE)
