@@ -13,15 +13,15 @@ unempl_ado <- read.csv("unemplAdoFemales/sl.uem.1524.fe.zs_Indicator_en_csv_v2.c
 female_primpers <- read.csv("femalePrimPers/se.prm.prsl.fe.zs_Indicator_en_csv_v2.csv", header=TRUE)
 country_GDP <- read.csv("countryGDP/ny.gdp.mktp.cd_Indicator_en_csv_v2.csv", header=TRUE)
 
-# truncate data to look at 2009-2013 (most recent 5-year period)
-fr_09_13 <- fert_rates[,c(1:4,54:58)]
-lr_09_13 <- lit_rates[,c(1:4,54:58)]
-gb_09_13 <- girlboy_ratios[,c(1:4,54:58)]
-hiv_09_13 <- hiv_prev[,c(1:4,54:58)]
-fsp_09_13 <- female_secprog[,c(1:4,54:58)]
-ua_09_13 <- unempl_ado[,c(1:4,54:58)]
-fpp_09_13 <- female_primpers[,c(1:4,54:58)]
-gdp_09_13 <- country_GDP[,c(1:4,54:58)]
+# truncate data to look at 2013 (most recent 1-year period)
+lr_09_13 <- lit_rates[,c(1:4,58)]
+fr_09_13 <- fert_rates[,c(1:4,58)]
+gb_09_13 <- girlboy_ratios[,c(1:4,58)]
+hiv_09_13 <- hiv_prev[,c(1:4,58)]
+fsp_09_13 <- female_secprog[,c(1:4,58)]
+ua_09_13 <- unempl_ado[,c(1:4,58)]
+fpp_09_13 <- female_primpers[,c(1:4,58)]
+gdp_09_13 <- country_GDP[,c(1:4,58)]
 
 # remove NA's in dataset
 # http://stackoverflow.com/questions/4862178/remove-rows-with-nas-in-data-frame
@@ -34,6 +34,8 @@ ua_09_13.clean <- ua_09_13[complete.cases(ua_09_13),]
 fpp_09_13.clean <- fpp_09_13[complete.cases(fpp_09_13),]
 gdp_09_13.clean <- gdp_09_13[complete.cases(gdp_09_13),]
 
+# ua - 206, hiv - 128, gdp - 218, fr - 227
+
 #histrogram of the distribution of the fr_09_13 in order to determine a high 
 #and low fertility rate 
 hist(fr_09_13.clean$X2013)
@@ -41,10 +43,10 @@ summary(fr_09_13.clean$X2013)
 
 
 #demo how to make a continuous variable into a categorical one
-#low_fr_13 <- ifelse(fr_09_13.clean$X2013<=60,1,0)
-#fr_09_13.class <- cbind(fr_09_13.clean,low_fr_13)
+low_fr_13 <- ifelse(fr_09_13.clean$X2013<=60,1,0)
+fr_09_13.class <- cbind(fr_09_13.clean,low_fr_13)
 
-#creating a new table with the HIV and UA variables merged and the fertility 
+# merge
 fr_ua_13.region.hiv.ua <- merge(fr_ua_13,hiv_09_13.clean[,c(1,9)],by='Country.Name')
 fr_ua_13.region.hiv.ua.fert <-merge(fr_ua_13.region.hiv.ua, fr_09_13.clean[,c(1,9)], by='Country.Name' )
 
