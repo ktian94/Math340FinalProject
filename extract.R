@@ -63,15 +63,15 @@ names(final_13)[9] <- "fr_2013"
 low_fr_13_NAV<- ifelse(fr_ua_13.region.hiv.ua.fert$X2013<=60,1,0)
 fr_13.region.hiv.ua.class <- cbind(fr_ua_13.region.hiv.ua.fert,low_fr_13_NAV)
 
-#dividing into training and testing 
+#dividing into training and testing for the New Data Set 
 tr<-sample(seq(1,150),50,replace=FALSE)
-fr_ua_13.region.hiv.ua.tr<-fr_13.region.hiv.ua.class[tr,]
-fr_ua_13.region.hiv.ua.ts<-fr_13.region.hiv.ua.class[-tr,]
+final_13.tr<-final_13[tr,]
+final_13.ts<-final_13[-tr,]
 
-#doing the classification analysis
-fr_13.lda<-lda(low_fr_13_NAV~fr_ua_13.region.hiv.ua.tr$X2013.x + fr_ua_13.region.hiv.ua.tr$X2013.y ,data=fr_ua_13.region.hiv.ua.tr)
+#doing the classification analysis with the New Data Set 
+fr_13.lda<-lda(final_13.tr$low_fr_13~final_13.tr$uaf_2013 + final_13.tr$uam_2013 + final_13.tr$gdp_2013 ,data=final_13.tr)
 
-#results of the classification analysis with variables UA and HIV
+#results of the classification analysis with predictors unemployment variables male and female and gdp 
 fr_13.lda
 
 #doing plots
@@ -79,10 +79,12 @@ plot(fr_13.lda)
 plot(fr_13.lda, dimen=1,type="density")
 
 #doing the predictions (for some reason this part does not work) 
-fr_13.pred<-predict(fr_13.lda, fr_ua_13.region.hiv.ua.ts) 
+fr_13.pred<-predict(fr_13.lda, final_13.ts) 
 
+names(fr_13.pred)
+fr_13.pclass<-fr_13.pred$class
 
-
+table(fr_13.pclass, final_13.ts$low_fr_13)
 
 # demo how to add region to data
 country_metadata <- read.csv("femalePrimPers/Metadata_Country_se.prm.prsl.fe.zs_Indicator_en_csv_v2.csv", header=TRUE)
