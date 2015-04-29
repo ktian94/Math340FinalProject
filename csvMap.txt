@@ -6,3 +6,12 @@ femaleSecProg/se.sec.prog.fe.zs_Indicator_en_csv_v2.csv
 unemplAdoFemales/sl.uem.1524.fe.zs_Indicator_en_csv_v2.csv
 femalePrimPers/se.prm.prsl.fe.zs_Indicator_en_csv_v2.csv
 countryGDP/ny.gdp.mktp.cd_Indicator_en_csv_v2.csv
+adoFertility/sp.ado.tfrt_Indicator_en_csv_v2.csv
+litRate/se.adt.1524.lt.fe.zs_Indicator_en_csv_v2.csv
+ratioGirlsBoys/se.enr.prsc.fm.zs_Indicator_en_csv_v2.csv
+hivPrev/sh.hiv.1524.fe.zs_Indicator_en_csv_v2.csv
+femaleSecProg/se.sec.prog.fe.zs_Indicator_en_csv_v2.csv
+unemplAdoFemales/sl.uem.1524.fe.zs_Indicator_en_csv_v2.csv
+unemplAdoMales/sl.uem.1524.ma.zs_Indicator_en_csv_v2.csv
+femalePrimPers/se.prm.prsl.fe.zs_Indicator_en_csv_v2.csv
+countryGDP/ny.gdp.mktp.cd_Indicator_en_csv_v2.csv
