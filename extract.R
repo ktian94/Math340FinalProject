@@ -82,6 +82,19 @@ fr_13.pclass<-fr_13.pred$class
 
 table(fr_13.pclass, final_13.ts$low_fr_13)
 
+#doing another classification method (quadtratic style)
+fr_13.qda<-qda(low_fr_13~uaf_2013 + uam_2013 + gdp_2013 ,data=final_13.tr)
+
+#getting the results QDA
+fr_13.qda
+
+#getting predictions for QDA
+pred.qda<-predict(fr_13.qda, final_13.ts)
+pqda.c<-pred.qda$class
+table(pqda.c, final_13.ts$low_fr_13 )
+
+
+
 # demo how to add region to data
 country_metadata <- read.csv("femalePrimPers/Metadata_Country_se.prm.prsl.fe.zs_Indicator_en_csv_v2.csv", header=TRUE)
 names(country_metadata)[1] <- "Country.Name"
