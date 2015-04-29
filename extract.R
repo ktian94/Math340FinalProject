@@ -59,17 +59,13 @@ names(ua_gdp_13)[8] <- "gdp_2013"
 final_13 <- merge(ua_gdp_13,fr_13.class[,c(1,5:6)],by='Country.Name')
 names(final_13)[9] <- "fr_2013"
 
-#creating a categorical variable from the fertility numbers
-low_fr_13_NAV<- ifelse(fr_ua_13.region.hiv.ua.fert$X2013<=60,1,0)
-fr_13.region.hiv.ua.class <- cbind(fr_ua_13.region.hiv.ua.fert,low_fr_13_NAV)
-
 #dividing into training and testing for the New Data Set 
-tr<-sample(seq(1,150),50,replace=FALSE)
+tr<-sample(seq(1,nrow(final_13)),98,replace=FALSE)
 final_13.tr<-final_13[tr,]
 final_13.ts<-final_13[-tr,]
 
 #doing the classification analysis with the New Data Set 
-fr_13.lda<-lda(final_13.tr$low_fr_13~final_13.tr$uaf_2013 + final_13.tr$uam_2013 + final_13.tr$gdp_2013 ,data=final_13.tr)
+fr_13.lda<-lda(low_fr_13~uaf_2013 + uam_2013 + gdp_2013 ,data=final_13.tr)
 
 #results of the classification analysis with predictors unemployment variables male and female and gdp 
 fr_13.lda
