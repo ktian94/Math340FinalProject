@@ -38,14 +38,6 @@ uam_13.clean <- uam_13[complete.cases(uam_13),]
 fpp_13.clean <- fpp_13[complete.cases(fpp_13),]
 gdp_13.clean <- gdp_13[complete.cases(gdp_13),]
 
-# uaf - 206, hiv - 128, gdp - 218, fr - 227
-
-#histrogram of the distribution of the fr_13 in order to determine a high 
-#and low fertility rate 
-hist(fr_13.clean$X2013)
-summary(fr_13.clean$X2013)
-
-
 #demo how to make a continuous variable into a categorical one
 low_fr_13 <- ifelse(fr_13.clean$X2013<=60,1,0)
 fr_13.class <- cbind(fr_13.clean,low_fr_13)
@@ -95,29 +87,38 @@ pqda.c<-pred.qda$class
 table(pqda.c, final_13.ts$low_fr_13 )
 
 #tree analysis 
+final_13.tr$low_fr_13 <- as.factor(final_13.tr$low_fr_13)
+final_13.ts$low_fr_13 <- as.factor(final_13.ts$low_fr_13)
 tm<-tree(low_fr_13~uaf_2013 + uam_2013 + gdp_2013 ,data=final_13.tr)
 plot(tm)
 text(tm)
+summary(tm)
+tree.pred<-predict(tm,final_13.ts,type="class")
+table(tree.pred, final_13.ts$low_fr_13)
+
+
 
 prune.mod<-prune.tree(tm,best=5)
 plot(prune.mod)
 text(prune.mod)
+summary(prune.mod)
+
+tree.pred<-predict(prune.mod,final_13.ts,type="class")
+table(tree.pred, final_13.ts$low_fr_13)
 
 #tree analysis with employment differences 
 tm<-tree(low_fr_13~dua_2013 + gdp_2013 ,data=final_13.tr)
 plot(tm)
 text(tm)
+summary(tm)
+
+tree.pred<-predict(tm,final_13.ts,type="class")
+table(tree.pred, final_13.ts$low_fr_13)
 
 prune.mod<-prune.tree(tm,best=6)
 plot(prune.mod)
 text(prune.mod)
+summary(prune.mod)
 
-summary(tm)
-
-# demo how to add region to data
-country_metadata <- read.csv("femalePrimPers/Metadata_Country_se.prm.prsl.fe.zs_Indicator_en_csv_v2.csv", header=TRUE)
-names(country_metadata)[1] <- "Country.Name"
-fr_ua_13.region <- merge(fr_ua_13,country_metadata[,c(1,3)],by='Country.Name')
-
-
-
+tree.pred<-predict(prune.mod,final_13.ts,type="class")
+table(tree.pred, final_13.ts$low_fr_13)
