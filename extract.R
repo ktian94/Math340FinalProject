@@ -2,6 +2,7 @@
 
 #loading necessary libraries and packages
 library(MASS)
+library(tree)
 
 # load data into R
 fert_rates <- read.csv("adoFertility/sp.ado.tfrt_Indicator_en_csv_v2.csv", header=TRUE)
@@ -92,6 +93,15 @@ fr_13.qda
 pred.qda<-predict(fr_13.qda, final_13.ts)
 pqda.c<-pred.qda$class
 table(pqda.c, final_13.ts$low_fr_13 )
+
+#tree analysis 
+tm<-tree(low_fr_13~uaf_2013 + uam_2013 + gdp_2013 ,data=final_13.tr)
+plot(tm)
+text(tm)
+
+prune.mod<-prune.tree(tm,best=5)
+plot(prune.mod)
+text(prune.mod)
 
 
 
