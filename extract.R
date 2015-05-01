@@ -103,7 +103,16 @@ prune.mod<-prune.tree(tm,best=5)
 plot(prune.mod)
 text(prune.mod)
 
+#tree analysis with employment differences 
+tm<-tree(low_fr_13~dua_2013 + gdp_2013 ,data=final_13.tr)
+plot(tm)
+text(tm)
 
+prune.mod<-prune.tree(tm,best=6)
+plot(prune.mod)
+text(prune.mod)
+
+summary(tm)
 
 # demo how to add region to data
 country_metadata <- read.csv("femalePrimPers/Metadata_Country_se.prm.prsl.fe.zs_Indicator_en_csv_v2.csv", header=TRUE)
