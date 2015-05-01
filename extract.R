@@ -111,4 +111,29 @@ names(country_metadata)[1] <- "Country.Name"
 fr_ua_13.region <- merge(fr_ua_13,country_metadata[,c(1,3)],by='Country.Name')
 
 
+#regression analysis
 
+#view distributions of variables
+#transform data using logs when necessary
+#check for normality of distributions
+hist(final_13$fr_2013)
+hist(log(final_13$fr_2013))
+hist(final_13$gdp_2013)
+hist(log(final_13$gdp_2013))
+hist(final_13$dua_2013)
+#check for relationship between response and each predictor
+plot(log(final_13$fr_2013),log(final_13$gdp_2013))
+plot(log(final_13$fr_2013),final_13$dua_2013)
+#test for interaction
+plot(log(final_13$gdp_2013),final_13$dua_2013)
+#create regression model
+regmod1<-lm(log(fr_2013)~log(gdp_2013)+dua_2013,data=final_13)
+#find residuals of the model
+res1<-residuals(regmod1)
+#check QQ plot of residuals for normality
+qqnorm(res1)
+#check for equal variance
+plot(res1)
+#view model and model statistics
+regmod1
+summary(regmod1)
