@@ -1,7 +1,7 @@
 # File-Name:       classification.R           
 # Date:            2015-05-01                                
-# Author:          Kevin Tian, Naveen Yarlagadda, Taylor Perz                             
-# Purpose:         Classification experiment for 
+# Author:          Naveen Yarlagadda, Kevin Tian, Taylor Perz                             
+# Purpose:         Classification experiments
 # Packages Used:   MASS, tree
 
 # loading necessary libraries and packages
